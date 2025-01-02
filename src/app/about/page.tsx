@@ -11,26 +11,42 @@ import {
 import { client } from "../../sanity/lib/sanity";
 
 const AboutPage = async () => {
-  const aboutData = await client.fetch(`*[_type == "about"][0]{
-        jobtitle,
-        headline,
-        paragraphone,
-        paragraphtwo,
-        frontendskill,
-        backendskill,
-        experience[] {
-          position,
-          company,
-          duration,
-          description
-        },
-        education[] {
-          institute,
-          field,
-          duration,
-          keypoints
-        }
-      }`);
+  let aboutData = null;
+
+  try {
+    aboutData = await client.fetch(`*[_type == "about"][0]{
+      jobtitle,
+      headline,
+      paragraphone,
+      paragraphtwo,
+      frontendskill,
+      backendskill,
+      experience[] {
+        position,
+        company,
+        durationfrom,
+        durationto,
+        description
+      },
+      education[] {
+        institute,
+        field,
+        durationfrom,
+        durationto,
+        keypoints
+      }
+    }`);
+  } catch (error) {
+    console.error("Error fetching Sanity data:", error);
+  }
+
+  if (!aboutData) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-600 text-lg">Failed to load About data. Please try again later.</p>
+      </div>
+    );
+  }
 
   const about: any = aboutData; // Access the first document
 
@@ -42,9 +58,11 @@ const AboutPage = async () => {
         <div className="max-w-6xl mx-auto px-4 py-20">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              {/* {about.jobtitle} */}
+              {about?.jobtitle || "Job Title"}
             </h1>
-            <p className="text-xl text-gray-600 mb-8">{about.headline}</p>
+            <p className="text-xl text-gray-600 mb-8">
+              {about?.headline || "Headline goes here."}
+            </p>
             <div className="flex justify-center space-x-4">
               <a
                 href="https://github.com/Saudabbasi47"
@@ -73,10 +91,10 @@ const AboutPage = async () => {
           </div>
           <div className="bg-white rounded-lg shadow-sm p-6">
             <p className="text-gray-600 leading-relaxed mb-6">
-              {about.paragraphone}
+              {about?.paragraphone || "No paragraph available."}
             </p>
             <p className="text-gray-600 leading-relaxed">
-              {about.paragraphtwo}
+              {about?.paragraphtwo || "No paragraph available."}
             </p>
           </div>
         </section>
@@ -94,14 +112,14 @@ const AboutPage = async () => {
                   Frontend
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {about.frontendskill?.map((skill: any, index: number) => (
+                  {about?.frontendskill?.map((skill: any, index: number) => (
                     <span
                       key={index}
                       className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm"
                     >
                       {skill}
                     </span>
-                  ))}
+                  )) || "No skills available."}
                 </div>
               </div>
               <div>
@@ -109,14 +127,14 @@ const AboutPage = async () => {
                   Backend
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {about.backendskill?.map((skill: any, index: number) => (
+                  {about?.backendskill?.map((skill: any, index: number) => (
                     <span
                       key={index}
                       className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm"
                     >
                       {skill}
                     </span>
-                  ))}
+                  )) || "No skills available."}
                 </div>
               </div>
             </div>
@@ -135,24 +153,21 @@ const AboutPage = async () => {
               <div className="space-y-6">
                 {about?.experience?.map((exp: any, index: number) => (
                   <div key={index}>
-                    {" "}
-                    {/* Add key to the parent div */}
                     <h3 className="text-lg font-semibold text-gray-900">
-                      {exp?.position}
+                      {exp?.position || "Position not available"}
                     </h3>
                     <p className="text-gray-600">
-                      {exp.company} • From {exp.durationfrom} To{" "}
-                      {exp.durationto}{" "}
+                      {exp?.company || "Company not available"} • From{" "}
+                      {exp?.durationfrom || "N/A"} To{" "}
+                      {exp?.durationto || "N/A"}
                     </p>
                     <ul className="mt-2 text-gray-600 list-disc list-inside">
                       {exp?.description?.map((i: any, iIndex: number) => (
-                        <li key={iIndex} className="">
-                          {i}
-                        </li>
-                      ))}
+                        <li key={iIndex}>{i || "Description not available"}</li>
+                      )) || "No description available."}
                     </ul>
                   </div>
-                ))}
+                )) || "No experience available."}
               </div>
             </div>
           </section>
@@ -166,19 +181,20 @@ const AboutPage = async () => {
             <div className="bg-white rounded-lg shadow-sm p-6">
               <div className="space-y-6">
                 {about?.education?.map((edu: any, index: number) => (
-                  <div>
-                    <h3
-                      className="text-lg font-semibold text-gray-900"
-                      key={index}
-                    >
-                      {edu.institute}
+                  <div key={index}>
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {edu?.institute || "Institute not available"}
                     </h3>
                     <p className="text-gray-600">
-                      {edu.field} •From {edu.durationfrom} To {edu.durationto}{" "}
+                      {edu?.field || "Field not available"} • From{" "}
+                      {edu?.durationfrom || "N/A"} To{" "}
+                      {edu?.durationto || "N/A"}
                     </p>
-                    <p className="mt-2 text-gray-600">{edu?.keypoints}</p>
+                    <p className="mt-2 text-gray-600">
+                      {edu?.keypoints || "No key points available."}
+                    </p>
                   </div>
-                ))}
+                )) || "No education available."}
               </div>
             </div>
           </section>

@@ -32,7 +32,7 @@ const AboutPage = async () => {
         }
       }`);
 
-  const about:any = aboutData; // Access the first document
+  const about: any = aboutData; // Access the first document
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -94,7 +94,7 @@ const AboutPage = async () => {
                   Frontend
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {about.frontendskill.map((skill: any, index: number) => (
+                  {about.frontendskill?.map((skill: any, index: number) => (
                     <span
                       key={index}
                       className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm"
@@ -109,7 +109,7 @@ const AboutPage = async () => {
                   Backend
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {about.backendskill.map((skill: any, index: number) => (
+                  {about.backendskill?.map((skill: any, index: number) => (
                     <span
                       key={index}
                       className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm"
@@ -133,30 +133,26 @@ const AboutPage = async () => {
             </div>
             <div className="bg-white rounded-lg shadow-sm p-6">
               <div className="space-y-6">
-              {about.experience?.map((exp: any, index: number) => (
-  <div key={index}> {/* Add key to the parent div */}
-    <h3 className="text-lg font-semibold text-gray-900">
-      {exp.position}
-    </h3>
-    <p className="text-gray-600">{exp.company} • From {exp.durationfrom} To {exp.durationto} </p>
-    <ul className="mt-2 text-gray-600 list-disc list-inside">
-      {exp.description.map((i: any, iIndex: number) => (
-        <li key={iIndex} className="">{i}</li> 
-      ))}
-    </ul>
-  </div>
-))}
-
-{about.education.map((edu: any, index: number) => (
-  <div key={index}> {/* Add key to the parent div */}
-    <h3 className="text-lg font-semibold text-gray-900">
-      {edu.institute}
-    </h3>
-    <p className="text-gray-600">{edu.field} • From {edu.durationfrom} To {edu.durationto} </p>
-    <p className="mt-2 text-gray-600">{edu.keypoints}</p>
-  </div>
-))}
-
+                {about?.experience?.map((exp: any, index: number) => (
+                  <div key={index}>
+                    {" "}
+                    {/* Add key to the parent div */}
+                    <h3 className="text-lg font-semibold text-gray-900">
+                      {exp?.position}
+                    </h3>
+                    <p className="text-gray-600">
+                      {exp.company} • From {exp.durationfrom} To{" "}
+                      {exp.durationto}{" "}
+                    </p>
+                    <ul className="mt-2 text-gray-600 list-disc list-inside">
+                      {exp?.description?.map((i: any, iIndex: number) => (
+                        <li key={iIndex} className="">
+                          {i}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
             </div>
           </section>
@@ -169,22 +165,20 @@ const AboutPage = async () => {
             </div>
             <div className="bg-white rounded-lg shadow-sm p-6">
               <div className="space-y-6">
-              {about.education.map((edu:any,index:number)=>(
-  <div>
-  <h3 className="text-lg font-semibold text-gray-900" key={index}>
-    {edu.institute}
-  </h3>
-  <p className="text-gray-600">{edu.field} •From {edu.durationfrom} To {edu.durationto} </p>
-  <p className="mt-2 text-gray-600">
-   {edu.keypoints}
-  </p>
-</div>
-
-
-
-
-              ))}
-                
+                {about?.education?.map((edu: any, index: number) => (
+                  <div>
+                    <h3
+                      className="text-lg font-semibold text-gray-900"
+                      key={index}
+                    >
+                      {edu.institute}
+                    </h3>
+                    <p className="text-gray-600">
+                      {edu.field} •From {edu.durationfrom} To {edu.durationto}{" "}
+                    </p>
+                    <p className="mt-2 text-gray-600">{edu?.keypoints}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </section>
